@@ -13,4 +13,5 @@ router.post(
   middleware.validate(authValidation.loginUser),
   authController.loginUser
 );
+router.post("/reset-password", authController.resetPassword);
 export default router;
