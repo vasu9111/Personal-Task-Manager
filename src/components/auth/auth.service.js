@@ -114,8 +114,48 @@ const resetPassword = async (reqBody) => {
     throw error;
   }
 };
+const getUserProfile = async (userId) => {
+  try {
+    const userProfile = await user.findById(userId, "name email preferences");
+
+    if (!userProfile) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
+    }
+
+    return userProfile;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
+
+const updateUserProfile = async (userId, updateData) => {
+  try {
+    const updatedProfile = await user.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+      fields: "name email preferences",
+    });
+
+    if (!updatedProfile) {
+      const error = new Error("User not found");
+      error.status = 404;
+      throw error;
+    }
+
+    return updatedProfile;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
+
 export default {
   registerUser,
   loginUser,
   resetPassword,
+  getUserProfile,
+  updateUserProfile,
 };

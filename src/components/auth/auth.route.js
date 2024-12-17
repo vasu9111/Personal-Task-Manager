@@ -14,4 +14,14 @@ router.post(
   authController.loginUser
 );
 router.post("/reset-password", authController.resetPassword);
+router.get(
+  "/profile",
+  middleware.authenticateToken,
+  authController.getUserProfile
+);
+router.put(
+  "/profile",
+  middleware.authenticateToken,
+  authController.updateUserProfile
+);
 export default router;
