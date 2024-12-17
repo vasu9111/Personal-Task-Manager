@@ -83,7 +83,39 @@ const loginUser = async (reqBody) => {
     throw error;
   }
 };
+const resetPassword = async (reqBody) => {
+  const { email, password } = reqBody;
+  try {
+    const userFound = await user.findOne({ email });
+
+    if (!userFound) {
+      const error = new Error(" Email ID is wrong please try again");
+      error.status = 400;
+      throw error;
+    }
+
+    const isSamePassword = await bcrypt.compare(password, userFound.password);
+    if (isSamePassword) {
+      const error = new Error(
+        "New password cannot be the same as the current password"
+      );
+      error.status = 400;
+      throw error;
+    }
+    const hashedPassword = await bcrypt.hash(password, 5);
+
+    await user.findByIdAndUpdate(userFound._id, {
+      password: hashedPassword,
+    });
+
+    return { message: "Password reseted successfully" };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   registerUser,
   loginUser,
+  resetPassword,
 };
