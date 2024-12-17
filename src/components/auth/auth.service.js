@@ -1,4 +1,7 @@
 import user from "../../models/user.js";
+import jwt from "jsonwebtoken";
+import config from "../../config/auth.js";
+import dateHelper from "../../utils/dateHelper.js";
 import bcrypt from "bcrypt";
 const emailExistingCheck = async (email) => {
   const countEmailExisting = await user.countDocuments({ email });
@@ -44,7 +47,43 @@ const registerUser = async (reqBody) => {
     throw error;
   }
 };
+//login Services
+const { accessTokenKey, accessTokenExpiry } = config.jwt;
+const loginUser = async (reqBody) => {
+  const { email, password } = reqBody;
+  try {
+    // Find user by username
+    const findUser = await user.findOne({ email });
 
+    if (!findUser) {
+      const error = new Error("Invalid credentials");
+      error.status = 400;
+      throw error;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, findUser.password);
+    if (!isPasswordValid) {
+      const error = new Error("Invalid password");
+      error.status = 400;
+      throw error;
+    }
+    const accessToken = jwt.sign({ _id: findUser._id }, accessTokenKey, {
+      expiresIn: accessTokenExpiry,
+    });
+
+    findUser.lastLogin = dateHelper.getCurrentDate();
+    await findUser.save();
+
+    return {
+      message: "Login successful",
+      accessToken: accessToken,
+    };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   registerUser,
+  loginUser,
 };
