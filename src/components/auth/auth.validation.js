@@ -17,7 +17,17 @@ const registerUser = Joi.object({
     "string.max": "Password must be a max 10 characters",
   }),
 });
-
+const loginUser = Joi.object({
+  email: Joi.string().email().required().messages({
+    "string.email": "invalid email format",
+    "any.required": "Email is required",
+  }),
+  password: Joi.string().required().messages({
+    "string.empty": "Password can't be empty",
+    "any.required": "Password is required",
+  }),
+});
 export default {
   registerUser,
+  loginUser,
 };

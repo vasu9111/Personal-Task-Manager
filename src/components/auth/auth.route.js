@@ -8,5 +8,9 @@ router.post(
   middleware.validate(authValidation.registerUser),
   authController.registerUser
 );
-
+router.post(
+  "/login",
+  middleware.validate(authValidation.loginUser),
+  authController.loginUser
+);
 export default router;
