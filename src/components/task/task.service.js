@@ -91,10 +91,24 @@ const deleteTask = async (taskId) => {
     throw error;
   }
 };
+const updateTaskStatus = async (taskId, reqBody) => {
+  try {
+    const task = await Task.findByIdAndUpdate(taskId, reqBody, { new: true });
+
+    if (!task) {
+      throw new Error("TASK_NOT_FOUND");
+    }
+    return task;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   createTask,
   getTasks,
   getTaskById,
   updateTask,
   deleteTask,
+  updateTaskStatus,
 };
