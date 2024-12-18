@@ -17,4 +17,9 @@ router.get(
   middleware.authenticateToken,
   taskcontroller.getTaskById
 );
+router.put(
+  "/tasks/:id",
+  middleware.authenticateToken,
+  taskcontroller.updateTask
+);
 export default router;

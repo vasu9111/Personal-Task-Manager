@@ -51,9 +51,37 @@ const getTaskById = async (taskId) => {
     throw error;
   }
 };
+// Update a task
+const updateTask = async (taskId, taskData) => {
+  try {
+    const tags = taskData.tags.split(",");
+    const task = await Task.findByIdAndUpdate(
+      taskId,
+      {
+        title: taskData.title,
+        description: taskData.description,
+        dueDate: taskData.dueDate,
+        priority: taskData.priority,
+        status: taskData.status,
+        category: taskData.category,
+        tags: tags,
+        attachments: taskData.attachments,
+      },
+      { new: true }
+    );
+    if (!task) {
+      throw new Error("TASK_NOT_FOUND");
+    }
+    return { message: "Task Update successfully", task };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 
 export default {
   createTask,
   getTasks,
   getTaskById,
+  updateTask,
 };

@@ -8,7 +8,7 @@ const createTask = async (req, res, next) => {
     next(error);
   }
 };
-//Get task
+// Get all tasks for a user
 const getAllTasks = async (req, res, next) => {
   try {
     const tasks = await taskService.getTasks(req.user._id);
@@ -26,9 +26,18 @@ const getTaskById = async (req, res, next) => {
     next(error);
   }
 };
-
+// update a task
+const updateTask = async (req, res, next) => {
+  try {
+    const task = await taskService.updateTask(req.params.id, req.body);
+    res.status(200).json(task);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   createTask,
   getAllTasks,
   getTaskById,
+  updateTask,
 };
