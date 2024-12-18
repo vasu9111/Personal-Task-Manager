@@ -4,6 +4,7 @@ import router from "./indexRoute.js";
 import envData from "./src/config/auth.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import errorCodes from "./errorCode.js";
 
 const PORT = process.env.PORT;
 console.log("envData.port", envData.port);
@@ -30,8 +31,18 @@ app.use(
 );
 app.use(cookieParser());
 app.use("/", router);
+// app.use((err, req, res, next) => {
+//   const statusCode = err.status || 500;
+//   res.status(statusCode).json({ error: err.message || "Server Error" });
+// });
 app.use((err, req, res, next) => {
-  const statusCode = err.status || 500;
-  res.status(statusCode).json({ error: err.message || "Server Error" });
+  const errorCode = errorCodes[err.message];
+  if (errorCode) {
+    return res.status(errorCode.httpStatusCode).json(errorCode.body);
+  }
+  res.status(500).json({
+    code: err.code || "server_crashed",
+    message: err.message || "Server crashed",
+  });
 });
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));
