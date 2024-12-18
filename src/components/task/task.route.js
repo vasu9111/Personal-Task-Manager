@@ -22,4 +22,9 @@ router.put(
   middleware.authenticateToken,
   taskcontroller.updateTask
 );
+router.delete(
+  "/tasks/:id",
+  middleware.authenticateToken,
+  taskcontroller.deleteTask
+);
 export default router;

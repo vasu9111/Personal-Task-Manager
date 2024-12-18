@@ -78,10 +78,23 @@ const updateTask = async (taskId, taskData) => {
     throw error;
   }
 };
-
+// Delete task
+const deleteTask = async (taskId) => {
+  try {
+    const task = await Task.findByIdAndDelete(taskId);
+    if (!task) {
+      throw new Error("TASK_NOT_FOUND");
+    }
+    return { message: "Task delele successfully" };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   createTask,
   getTasks,
   getTaskById,
   updateTask,
+  deleteTask,
 };
