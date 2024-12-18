@@ -27,4 +27,10 @@ router.delete(
   middleware.authenticateToken,
   taskcontroller.deleteTask
 );
+router.patch(
+  "/tasks/:id/status",
+  middleware.authenticateToken,
+  taskcontroller.updateTaskStatus
+);
+
 export default router;
