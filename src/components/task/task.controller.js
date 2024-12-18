@@ -35,9 +35,19 @@ const updateTask = async (req, res, next) => {
     next(error);
   }
 };
+// Delete task
+const deleteTask = async (req, res, next) => {
+  try {
+    const task = await taskService.deleteTask(req.params.id);
+    res.status(200).json(task);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   createTask,
   getAllTasks,
   getTaskById,
   updateTask,
+  deleteTask,
 };
