@@ -1,9 +1,9 @@
-import Task from "../../models/task.js";
+import taskMdl from "../../models/task.js";
 
 const createTask = async (userId, taskData) => {
   try {
     const tags = taskData.tags.split(",");
-    const task = new Task({
+    const task = new taskMdl({
       userId,
       title: taskData.title,
       description: taskData.description,
@@ -26,7 +26,7 @@ const createTask = async (userId, taskData) => {
 // Get all tasks for a user
 const getTasks = async (userId) => {
   try {
-    const task = await Task.find({ userId });
+    const task = await taskMdl.find({ userId });
     if (!task || task.length === 0) {
       const error = new Error("TASK_NOT_FOUND");
       throw error;
@@ -40,7 +40,7 @@ const getTasks = async (userId) => {
 //Get task by id
 const getTaskById = async (taskId) => {
   try {
-    const task = await Task.findById(taskId);
+    const task = await taskMdl.findById(taskId);
     if (!task) {
       const error = new Error("TASK_NOT_FOUND");
       throw error;
@@ -55,7 +55,7 @@ const getTaskById = async (taskId) => {
 const updateTask = async (taskId, taskData) => {
   try {
     const tags = taskData.tags.split(",");
-    const task = await Task.findByIdAndUpdate(
+    const task = await taskMdl.findByIdAndUpdate(
       taskId,
       {
         title: taskData.title,
@@ -81,7 +81,7 @@ const updateTask = async (taskId, taskData) => {
 // Delete task
 const deleteTask = async (taskId) => {
   try {
-    const task = await Task.findByIdAndDelete(taskId);
+    const task = await taskMdl.findByIdAndDelete(taskId);
     if (!task) {
       throw new Error("TASK_NOT_FOUND");
     }
@@ -93,7 +93,9 @@ const deleteTask = async (taskId) => {
 };
 const updateTaskStatus = async (taskId, reqBody) => {
   try {
-    const task = await Task.findByIdAndUpdate(taskId, reqBody, { new: true });
+    const task = await taskMdl.findByIdAndUpdate(taskId, reqBody, {
+      new: true,
+    });
 
     if (!task) {
       throw new Error("TASK_NOT_FOUND");
