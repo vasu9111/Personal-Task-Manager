@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import router from "./indexRoute.js";
-import envData from "./src/config/auth.js";
+import envData from "./src/config/index.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import errorCodes from "./errorCode.js";
@@ -31,10 +31,6 @@ app.use(
 );
 app.use(cookieParser());
 app.use("/", router);
-// app.use((err, req, res, next) => {
-//   const statusCode = err.status || 500;
-//   res.status(statusCode).json({ error: err.message || "Server Error" });
-// });
 app.use((err, req, res, next) => {
   const errorCode = errorCodes[err.message];
   if (errorCode) {

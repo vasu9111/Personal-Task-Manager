@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "../config/auth.js";
+import config from "../config/index.js";
 const validate = (schema) => {
   return async (req, res, next) => {
     try {

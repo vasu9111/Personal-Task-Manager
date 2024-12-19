@@ -1,6 +1,6 @@
 import userMdl from "../../models/user.js";
 import jwt from "jsonwebtoken";
-import config from "../../config/auth.js";
+import config from "../../config/index.js";
 import dateHelper from "../../utils/dateHelper.js";
 import bcrypt from "bcrypt";
 const emailExistingCheck = async (email) => {

@@ -32,5 +32,6 @@ router.patch(
   middleware.authenticateToken,
   taskcontroller.updateTaskStatus
 );
+router.get("/today", middleware.authenticateToken, taskcontroller.getTodayTask);
 
 export default router;
