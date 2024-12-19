@@ -107,9 +107,9 @@ const updateTaskStatus = async (taskId, reqBody) => {
   }
 };
 
-const getTodayTask = async () => {
+const getTodayTask = async (userId) => {
   try {
-    const tasks = await taskMdl.find();
+    const tasks = await taskMdl.find({ userId });
     const todayTasks = tasks.filter((task) => {
       return (
         task.dueDate.toLocaleDateString() == new Date().toLocaleDateString()
@@ -124,9 +124,9 @@ const getTodayTask = async () => {
     throw error;
   }
 };
-const getUpcominTask = async () => {
+const getUpcomingTask = async (userId) => {
   try {
-    const tasks = await taskMdl.find();
+    const tasks = await taskMdl.find({ userId });
     const upcomingTasks = tasks.filter((task) => {
       return (
         task.dueDate.toLocaleDateString() >= new Date().toLocaleDateString()
@@ -141,9 +141,9 @@ const getUpcominTask = async () => {
     throw error;
   }
 };
-const getOverdueTask = async () => {
+const getOverdueTask = async (userId) => {
   try {
-    const tasks = await taskMdl.find();
+    const tasks = await taskMdl.find({ userId });
     const OverdueTask = tasks.filter((task) => {
       return (
         task.dueDate.toLocaleDateString() < new Date().toLocaleDateString()
@@ -166,6 +166,6 @@ export default {
   deleteTask,
   updateTaskStatus,
   getTodayTask,
-  getUpcominTask,
+  getUpcomingTask,
   getOverdueTask,
 };
