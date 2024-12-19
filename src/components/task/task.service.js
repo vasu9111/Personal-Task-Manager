@@ -133,7 +133,7 @@ const getUpcominTask = async () => {
       );
     });
     if (upcomingTasks.length === 0) {
-      throw new Error("TODAY_TASK_NOT_FOUND");
+      throw new Error("UPCOMING_TASK_NOT_FOUND");
     }
     return upcomingTasks;
   } catch (err) {
@@ -141,7 +141,23 @@ const getUpcominTask = async () => {
     throw error;
   }
 };
-
+const getOverdueTask = async () => {
+  try {
+    const tasks = await taskMdl.find();
+    const OverdueTask = tasks.filter((task) => {
+      return (
+        task.dueDate.toLocaleDateString() < new Date().toLocaleDateString()
+      );
+    });
+    if (OverdueTask.length === 0) {
+      throw new Error("OVERDUE_TASK_NOT_FOUND");
+    }
+    return OverdueTask;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   createTask,
   getTasks,
@@ -151,4 +167,5 @@ export default {
   updateTaskStatus,
   getTodayTask,
   getUpcominTask,
+  getOverdueTask,
 };

@@ -36,6 +36,11 @@ router.get("/today", middleware.authenticateToken, taskcontroller.getTodayTask);
 router.get(
   "/upcoming",
   middleware.authenticateToken,
-  taskcontroller.getupcomingTask
+  taskcontroller.getUpcomingTask
+);
+router.get(
+  "/overdue",
+  middleware.authenticateToken,
+  taskcontroller.getOverdueTask
 );
 export default router;
