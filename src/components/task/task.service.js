@@ -27,7 +27,7 @@ const createTask = async (userId, taskData) => {
 const getTasks = async (userId) => {
   try {
     const task = await taskMdl.find({ userId });
-    if (!task || task.length === 0) {
+    if (task.length === 0) {
       const error = new Error("TASK_NOT_FOUND");
       throw error;
     }
@@ -106,6 +106,25 @@ const updateTaskStatus = async (taskId, reqBody) => {
     throw error;
   }
 };
+
+const getTodayTask = async () => {
+  try {
+    const tasks = await taskMdl.find();
+    const todayTasks = tasks.filter((task) => {
+      return (
+        task.dueDate.toLocaleDateString() == new Date().toLocaleDateString()
+      );
+    });
+    if (todayTasks.length === 0) {
+      throw new Error("TODAY_TASK_NOT_FOUND");
+    }
+    return todayTasks;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
+
 export default {
   createTask,
   getTasks,
@@ -113,4 +132,5 @@ export default {
   updateTask,
   deleteTask,
   updateTaskStatus,
+  getTodayTask,
 };

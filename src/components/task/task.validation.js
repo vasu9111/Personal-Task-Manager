@@ -5,7 +5,7 @@ const createTask = Joi.object({
     "any.required": "titel is required",
   }),
   description: Joi.string().optional(),
-  dueDate: Joi.date().greater("now").required(),
+  dueDate: Joi.date().required(),
   priority: Joi.string().valid("low", "medium", "high").required(),
   status: Joi.string()
     .valid("pending", "in_progress", "completed", "archived")

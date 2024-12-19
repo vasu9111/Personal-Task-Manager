@@ -44,6 +44,7 @@ const deleteTask = async (req, res, next) => {
     next(error);
   }
 };
+// update task by Status
 const updateTaskStatus = async (req, res, next) => {
   try {
     const task = await taskService.updateTaskStatus(req.params.id, req.body);
@@ -52,6 +53,15 @@ const updateTaskStatus = async (req, res, next) => {
     next(error);
   }
 };
+const getTodayTask = async (req, res, next) => {
+  try {
+    const task = await taskService.getTodayTask();
+    res.status(200).json(task);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createTask,
   getAllTasks,
@@ -59,4 +69,5 @@ export default {
   updateTask,
   deleteTask,
   updateTaskStatus,
+  getTodayTask,
 };

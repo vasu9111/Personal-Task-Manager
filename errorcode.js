@@ -41,11 +41,11 @@ const errorCodes = {
       message: "New password cannot be the same as the current password",
     },
   },
-  SAME_PASSWORD: {
-    httpStatusCode: 400,
+  TODAY_TASK_NOT_FOUND: {
+    httpStatusCode: 404,
     body: {
-      code: "same_password",
-      message: "New password cannot be the same as the current password",
+      code: "today_task_not_found",
+      message: "today task not found ",
     },
   },
 };
