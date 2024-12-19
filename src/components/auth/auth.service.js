@@ -1,10 +1,10 @@
-import user from "../../models/user.js";
+import userMdl from "../../models/user.js";
 import jwt from "jsonwebtoken";
 import config from "../../config/auth.js";
 import dateHelper from "../../utils/dateHelper.js";
 import bcrypt from "bcrypt";
 const emailExistingCheck = async (email) => {
-  const countEmailExisting = await user.countDocuments({ email });
+  const countEmailExisting = await userMdl.countDocuments({ email });
 
   if (countEmailExisting > 0) {
     return true;
@@ -12,26 +12,35 @@ const emailExistingCheck = async (email) => {
   return false;
 };
 // Add user
+const {
+  accessTokenKey,
+  refreshTokenKey,
+  accessTokenExpiry,
+  refreshTokenExpiry,
+} = config.jwt;
 const registerUser = async (reqBody) => {
   const { name, email, password } = reqBody;
   try {
     const emailCheck = await emailExistingCheck(email);
     if (emailCheck) {
-      const error = new Error("user already exist");
-      error.status = 400;
-      throw error;
+      throw new Error("USER_ALREADY_EXIST");
     }
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 5);
     // Create new user
-    const newUser = new user({
+    const newUser = new userMdl({
       name,
       email,
       password: hashedPassword,
       createdAt: new Date(),
     });
-
     const userAdd = await newUser.save();
+    const accessToken = jwt.sign({ _id: userAdd._id }, accessTokenKey, {
+      expiresIn: accessTokenExpiry,
+    });
+    const refreshToken = jwt.sign({ _id: userAdd._id }, refreshTokenKey, {
+      expiresIn: refreshTokenExpiry,
+    });
 
     const result = {
       _id: userAdd._id,
@@ -39,6 +48,8 @@ const registerUser = async (reqBody) => {
       email: userAdd.email,
       createdAt: userAdd.createdAt,
       preferences: userAdd.preferences,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
     };
 
     return result;
@@ -48,24 +59,17 @@ const registerUser = async (reqBody) => {
   }
 };
 //login Services
-const { accessTokenKey, accessTokenExpiry } = config.jwt;
 const loginUser = async (reqBody) => {
   const { email, password } = reqBody;
   try {
     // Find user by username
-    const findUser = await user.findOne({ email });
-
+    const findUser = await userMdl.findOne({ email });
     if (!findUser) {
-      const error = new Error("Invalid credentials");
-      error.status = 400;
-      throw error;
+      throw new Error("INVALID_CREDENTIALS");
     }
-
     const isPasswordValid = await bcrypt.compare(password, findUser.password);
     if (!isPasswordValid) {
-      const error = new Error("Invalid password");
-      error.status = 400;
-      throw error;
+      throw new Error("INVALID_PASSWORD");
     }
     const accessToken = jwt.sign({ _id: findUser._id }, accessTokenKey, {
       expiresIn: accessTokenExpiry,
@@ -86,25 +90,18 @@ const loginUser = async (reqBody) => {
 const resetPassword = async (reqBody) => {
   const { email, password } = reqBody;
   try {
-    const userFound = await user.findOne({ email });
-
+    const userFound = await userMdl.findOne({ email });
     if (!userFound) {
-      const error = new Error(" Email ID is wrong please try again");
-      error.status = 400;
-      throw error;
+      throw new Error("USER_NOT_FOUND");
     }
 
     const isSamePassword = await bcrypt.compare(password, userFound.password);
     if (isSamePassword) {
-      const error = new Error(
-        "New password cannot be the same as the current password"
-      );
-      error.status = 400;
-      throw error;
+      throw new Error("SAME_PASSWORD");
     }
     const hashedPassword = await bcrypt.hash(password, 5);
 
-    await user.findByIdAndUpdate(userFound._id, {
+    await userMdl.findByIdAndUpdate(userFound._id, {
       password: hashedPassword,
     });
 
@@ -116,12 +113,12 @@ const resetPassword = async (reqBody) => {
 };
 const getUserProfile = async (userId) => {
   try {
-    const userProfile = await user.findById(userId, "name email preferences");
-
+    const userProfile = await userMdl.findById(
+      userId,
+      "name email preferences"
+    );
     if (!userProfile) {
-      const error = new Error("User not found");
-      error.status = 404;
-      throw error;
+      throw new Error("USER_NOT_FOUND");
     }
 
     return userProfile;
@@ -133,18 +130,15 @@ const getUserProfile = async (userId) => {
 
 const updateUserProfile = async (userId, updateData) => {
   try {
-    const updatedProfile = await user.findByIdAndUpdate(userId, updateData, {
+    const updatedProfile = await userMdl.findByIdAndUpdate(userId, updateData, {
       new: true,
       runValidators: true,
       fields: "name email preferences",
     });
 
     if (!updatedProfile) {
-      const error = new Error("User not found");
-      error.status = 404;
-      throw error;
+      throw new Error("USER_NOT_FOUND");
     }
-
     return updatedProfile;
   } catch (err) {
     const error = new Error(err.message);
