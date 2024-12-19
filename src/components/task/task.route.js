@@ -5,30 +5,17 @@ import middleware from "../../middleware/task.js";
 const router = express.Router();
 
 router.post(
-  "/tasks",
+  "/",
   middleware.authenticateToken,
   middleware.validate(taskvalidation.createTask),
   taskcontroller.createTask
 );
-router.get("/tasks", middleware.authenticateToken, taskcontroller.getAllTasks);
+router.get("/", middleware.authenticateToken, taskcontroller.getAllTasks);
 
-router.get(
-  "/tasks/:id",
-  middleware.authenticateToken,
-  taskcontroller.getTaskById
-);
-router.put(
-  "/tasks/:id",
-  middleware.authenticateToken,
-  taskcontroller.updateTask
-);
-router.delete(
-  "/tasks/:id",
-  middleware.authenticateToken,
-  taskcontroller.deleteTask
-);
+router.put("/:id", middleware.authenticateToken, taskcontroller.updateTask);
+router.delete("/:id", middleware.authenticateToken, taskcontroller.deleteTask);
 router.patch(
-  "/tasks/:id/status",
+  "/:id/status",
   middleware.authenticateToken,
   taskcontroller.updateTaskStatus
 );
@@ -43,4 +30,5 @@ router.get(
   middleware.authenticateToken,
   taskcontroller.getOverdueTask
 );
+router.get("/:id", middleware.authenticateToken, taskcontroller.getTaskById);
 export default router;

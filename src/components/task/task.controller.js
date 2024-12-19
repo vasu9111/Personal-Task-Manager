@@ -55,7 +55,7 @@ const updateTaskStatus = async (req, res, next) => {
 };
 const getTodayTask = async (req, res, next) => {
   try {
-    const task = await taskService.getTodayTask();
+    const task = await taskService.getTodayTask(req.user._id);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -64,7 +64,7 @@ const getTodayTask = async (req, res, next) => {
 
 const getUpcomingTask = async (req, res, next) => {
   try {
-    const task = await taskService.getupcominTask();
+    const task = await taskService.getUpcomingTask(req.user._id);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -72,7 +72,7 @@ const getUpcomingTask = async (req, res, next) => {
 };
 const getOverdueTask = async (req, res, next) => {
   try {
-    const task = await taskService.getOverdueTask();
+    const task = await taskService.getOverdueTask(req.user._id);
     res.status(200).json(task);
   } catch (error) {
     next(error);
