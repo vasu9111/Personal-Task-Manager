@@ -124,6 +124,23 @@ const getTodayTask = async () => {
     throw error;
   }
 };
+const getUpcominTask = async () => {
+  try {
+    const tasks = await taskMdl.find();
+    const upcomingTasks = tasks.filter((task) => {
+      return (
+        task.dueDate.toLocaleDateString() >= new Date().toLocaleDateString()
+      );
+    });
+    if (upcomingTasks.length === 0) {
+      throw new Error("TODAY_TASK_NOT_FOUND");
+    }
+    return upcomingTasks;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 
 export default {
   createTask,
@@ -133,4 +150,5 @@ export default {
   deleteTask,
   updateTaskStatus,
   getTodayTask,
+  getUpcominTask,
 };

@@ -62,6 +62,15 @@ const getTodayTask = async (req, res, next) => {
   }
 };
 
+const getupcomingTask = async (req, res, next) => {
+  try {
+    const task = await taskService.getupcominTask();
+    res.status(200).json(task);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createTask,
   getAllTasks,
@@ -70,4 +79,5 @@ export default {
   deleteTask,
   updateTaskStatus,
   getTodayTask,
+  getupcomingTask,
 };
