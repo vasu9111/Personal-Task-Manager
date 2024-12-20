@@ -33,7 +33,7 @@ const getAllCategory = async (userId) => {
 // update category
 const updateCategory = async (categoryId, categoryData) => {
   try {
-    const categoey = await categoryMld.findByIdAndUpdate(
+    const category = await categoryMld.findByIdAndUpdate(
       categoryId,
       {
         name: categoryData.name,
@@ -42,10 +42,24 @@ const updateCategory = async (categoryId, categoryData) => {
       },
       { new: true }
     );
-    if (!categoey) {
+    if (!category) {
       throw new Error("CATEGORY_NOT_FOUND");
     }
-    return { message: "categoey Update successfully", categoey };
+    return { message: "categoey Update successfully", category };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
+
+// category delete
+const deleteCategory = async (categoryId) => {
+  try {
+    const category = await categoryMld.findByIdAndDelete(categoryId);
+    if (!category) {
+      throw new Error("CATEGORY_NOT_FOUND");
+    }
+    return { message: "category delele successfully" };
   } catch (err) {
     const error = new Error(err.message);
     throw error;
@@ -55,4 +69,5 @@ export default {
   createCategory,
   getAllCategory,
   updateCategory,
+  deleteCategory,
 };

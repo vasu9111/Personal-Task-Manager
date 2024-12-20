@@ -20,7 +20,7 @@ const getAllCategory = async (req, res, next) => {
     next(error);
   }
 };
-
+// update category
 const updateCategory = async (req, res, next) => {
   try {
     const category = await categoryService.updateCategory(
@@ -32,8 +32,18 @@ const updateCategory = async (req, res, next) => {
     next(error);
   }
 };
+//delete category
+const deleteCategory = async (req, res, next) => {
+  try {
+    const category = await categoryService.deleteCategory(req.params.id);
+    res.status(200).json(category);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   createCategory,
   getAllCategory,
   updateCategory,
+  deleteCategory,
 };

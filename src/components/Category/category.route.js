@@ -20,4 +20,9 @@ router.put(
   middleware.authenticateToken,
   categoryController.updateCategory
 );
+router.delete(
+  "/:id",
+  middleware.authenticateToken,
+  categoryController.deleteCategory
+);
 export default router;
