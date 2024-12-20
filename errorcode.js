@@ -7,21 +7,21 @@ const errorCodes = {
     },
   },
   USER_ALREADY_EXIST: {
-    httpStatusCode: 404,
+    httpStatusCode: 409,
     body: {
       code: "user_already_exist",
       message: "user already exist",
     },
   },
   INVALID_CREDENTIALS: {
-    httpStatusCode: 404,
+    httpStatusCode: 401,
     body: {
       code: "incalid_credetials",
       message: "Invalid credentials",
     },
   },
   INVALID_PASSWORD: {
-    httpStatusCode: 404,
+    httpStatusCode: 401,
     body: {
       code: "incalid_password",
       message: "INVALID_PASSWORD",
@@ -35,7 +35,7 @@ const errorCodes = {
     },
   },
   SAME_PASSWORD: {
-    httpStatusCode: 400,
+    httpStatusCode: 409,
     body: {
       code: "same_password",
       message: "New password cannot be the same as the current password",
@@ -46,6 +46,27 @@ const errorCodes = {
     body: {
       code: "today_task_not_found",
       message: "today task not found ",
+    },
+  },
+  UPCOMING_TASK_NOT_FOUND: {
+    httpStatusCode: 404,
+    body: {
+      code: "upcoming_task_not_found",
+      message: "upcoming task not found ",
+    },
+  },
+  OVERDUE_TASK_NOT_FOUND: {
+    httpStatusCode: 404,
+    body: {
+      code: "overdue_task_not_found",
+      message: "overdue task not found ",
+    },
+  },
+  CATEGORY_NOT_FOUND: {
+    httpStatusCode: 404,
+    body: {
+      code: "category_not_found",
+      message: "category task not found ",
     },
   },
 };

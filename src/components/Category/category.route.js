@@ -10,4 +10,9 @@ router.post(
   middleware.validate(cetegoryValidation.category),
   categoryController.createCategory
 );
+router.get(
+  "/categories",
+  middleware.authenticateToken,
+  categoryController.getAllCategory
+);
 export default router;
