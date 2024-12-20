@@ -20,7 +20,20 @@ const getAllCategory = async (req, res, next) => {
     next(error);
   }
 };
+
+const updateCategory = async (req, res, next) => {
+  try {
+    const category = await categoryService.updateCategory(
+      req.params.id,
+      req.body
+    );
+    res.status(200).json(category);
+  } catch (error) {
+    next(error);
+  }
+};
 export default {
   createCategory,
   getAllCategory,
+  updateCategory,
 };

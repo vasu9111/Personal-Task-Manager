@@ -30,7 +30,29 @@ const getAllCategory = async (userId) => {
     throw error;
   }
 };
+// update category
+const updateCategory = async (categoryId, categoryData) => {
+  try {
+    const categoey = await categoryMld.findByIdAndUpdate(
+      categoryId,
+      {
+        name: categoryData.name,
+        color: categoryData.color,
+        description: categoryData.description,
+      },
+      { new: true }
+    );
+    if (!categoey) {
+      throw new Error("CATEGORY_NOT_FOUND");
+    }
+    return { message: "categoey Update successfully", categoey };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   createCategory,
   getAllCategory,
+  updateCategory,
 };

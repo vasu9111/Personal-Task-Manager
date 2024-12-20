@@ -30,7 +30,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use("/", router);
+app.use("/api", router);
 app.use((err, req, res, next) => {
   const errorCode = errorCodes[err.message];
   if (errorCode) {

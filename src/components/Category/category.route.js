@@ -5,14 +5,19 @@ import middleware from "../../middleware/validation.js";
 
 const router = express.Router();
 router.post(
-  "/categories",
+  "/",
   middleware.authenticateToken,
   middleware.validate(cetegoryValidation.category),
   categoryController.createCategory
 );
 router.get(
-  "/categories",
+  "/",
   middleware.authenticateToken,
   categoryController.getAllCategory
+);
+router.put(
+  "/:id",
+  middleware.authenticateToken,
+  categoryController.updateCategory
 );
 export default router;
