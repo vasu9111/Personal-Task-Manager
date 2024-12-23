@@ -1,8 +1,8 @@
-import categoryMld from "../../models/cetegory.js";
+import CategoryMdl from "../../models/cetegory.js";
 // cerate a categoey add
 const createCategory = async (userId, categoryData) => {
   try {
-    const category = new categoryMld({
+    const category = new CategoryMdl({
       userId,
       name: categoryData.name,
       color: categoryData.color,
@@ -19,7 +19,7 @@ const createCategory = async (userId, categoryData) => {
 // get user all category
 const getAllCategory = async (userId) => {
   try {
-    const category = await categoryMld.find({ userId });
+    const category = await CategoryMdl.find({ userId });
     if (category.length === 0) {
       const error = new Error("CATEGORY_NOT_FOUND");
       throw error;
@@ -33,7 +33,7 @@ const getAllCategory = async (userId) => {
 // update category
 const updateCategory = async (categoryId, categoryData) => {
   try {
-    const category = await categoryMld.findByIdAndUpdate(
+    const category = await CategoryMdl.findByIdAndUpdate(
       categoryId,
       {
         name: categoryData.name,
@@ -55,7 +55,7 @@ const updateCategory = async (categoryId, categoryData) => {
 // category delete
 const deleteCategory = async (categoryId) => {
   try {
-    const category = await categoryMld.findByIdAndDelete(categoryId);
+    const category = await CategoryMdl.findByIdAndDelete(categoryId);
     if (!category) {
       throw new Error("CATEGORY_NOT_FOUND");
     }

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    userId: { type: mongoose.Schema.Types.ObjectId },
     title: { type: String, required: true },
     description: String,
     dueDate: Date,
@@ -12,6 +12,7 @@ const taskSchema = new mongoose.Schema(
       enum: ["pending", "in_progress", "completed", "archived"],
       default: "pending",
     },
+    // category: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
     tags: { type: Array },
     attachments: [
       {
@@ -27,6 +28,6 @@ const taskSchema = new mongoose.Schema(
   { versionKey: false }
 );
 
-const task = mongoose.model("task", taskSchema);
+const TaskMdl = mongoose.model("task", taskSchema);
 
-export default task;
+export default TaskMdl;

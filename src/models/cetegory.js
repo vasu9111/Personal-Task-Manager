@@ -5,7 +5,6 @@ const cetegorySchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User",
     },
     name: {
       type: String,
@@ -23,10 +22,11 @@ const cetegorySchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    // tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "tasks" }],
   },
   { versionKey: false }
 );
 
-const cetegoryMdl = mongoose.model("category", cetegorySchema);
+const CetegoryMdl = mongoose.model("category", cetegorySchema);
 
-export default cetegoryMdl;
+export default CetegoryMdl;

@@ -1,7 +1,7 @@
 import express from "express";
 import taskcontroller from "./task.controller.js";
 import taskvalidation from "./task.validation.js";
-import middleware from "../../middleware/task.js";
+import middleware from "../../middleware/auth.js";
 const router = express.Router();
 
 router.post(
