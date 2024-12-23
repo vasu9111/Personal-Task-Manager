@@ -1,7 +1,7 @@
 import express from "express";
 import categoryController from "./category.controller.js";
 import cetegoryValidation from "./category.validation.js";
-import middleware from "../../middleware/validation.js";
+import middleware from "../../middleware/auth.js";
 
 const router = express.Router();
 router.post(

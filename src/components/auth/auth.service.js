@@ -1,10 +1,10 @@
-import userMdl from "../../models/user.js";
+import UserMdl from "../../models/user.js";
 import jwt from "jsonwebtoken";
 import config from "../../config/index.js";
 import dateHelper from "../../utils/dateHelper.js";
 import bcrypt from "bcrypt";
 const emailExistingCheck = async (email) => {
-  const countEmailExisting = await userMdl.countDocuments({ email });
+  const countEmailExisting = await UserMdl.countDocuments({ email });
 
   if (countEmailExisting > 0) {
     return true;
@@ -28,7 +28,7 @@ const registerUser = async (reqBody) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 5);
     // Create new user
-    const newUser = new userMdl({
+    const newUser = new UserMdl({
       name,
       email,
       password: hashedPassword,
@@ -63,7 +63,7 @@ const loginUser = async (reqBody) => {
   const { email, password } = reqBody;
   try {
     // Find user by username
-    const findUser = await userMdl.findOne({ email });
+    const findUser = await UserMdl.findOne({ email });
     if (!findUser) {
       throw new Error("INVALID_CREDENTIALS");
     }
@@ -74,6 +74,9 @@ const loginUser = async (reqBody) => {
     const accessToken = jwt.sign({ _id: findUser._id }, accessTokenKey, {
       expiresIn: accessTokenExpiry,
     });
+    const refreshToken = jwt.sign({ _id: findUser._id }, refreshTokenKey, {
+      expiresIn: refreshTokenExpiry,
+    });
 
     findUser.lastLogin = dateHelper.getCurrentDate();
     await findUser.save();
@@ -81,6 +84,7 @@ const loginUser = async (reqBody) => {
     return {
       message: "Login successful",
       accessToken: accessToken,
+      refreshToken: refreshToken,
     };
   } catch (err) {
     const error = new Error(err.message);
@@ -90,7 +94,7 @@ const loginUser = async (reqBody) => {
 const resetPassword = async (reqBody) => {
   const { email, password } = reqBody;
   try {
-    const userFound = await userMdl.findOne({ email });
+    const userFound = await UserMdl.findOne({ email });
     if (!userFound) {
       throw new Error("USER_NOT_FOUND");
     }
@@ -101,7 +105,7 @@ const resetPassword = async (reqBody) => {
     }
     const hashedPassword = await bcrypt.hash(password, 5);
 
-    await userMdl.findByIdAndUpdate(userFound._id, {
+    await UserMdl.findByIdAndUpdate(userFound._id, {
       password: hashedPassword,
     });
 
@@ -113,7 +117,7 @@ const resetPassword = async (reqBody) => {
 };
 const getUserProfile = async (userId) => {
   try {
-    const userProfile = await userMdl.findById(
+    const userProfile = await UserMdl.findById(
       userId,
       "name email preferences"
     );
@@ -130,7 +134,7 @@ const getUserProfile = async (userId) => {
 
 const updateUserProfile = async (userId, updateData) => {
   try {
-    const updatedProfile = await userMdl.findByIdAndUpdate(userId, updateData, {
+    const updatedProfile = await UserMdl.findByIdAndUpdate(userId, updateData, {
       new: true,
       runValidators: true,
       fields: "name email preferences",

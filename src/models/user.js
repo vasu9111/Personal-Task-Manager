@@ -26,6 +26,6 @@ const userSchema = new mongoose.Schema(
   },
   { versionKey: false }
 );
-const userMdl = mongoose.model("users", userSchema);
+const UserMdl = mongoose.model("users", userSchema);
 
-export default userMdl;
+export default UserMdl;

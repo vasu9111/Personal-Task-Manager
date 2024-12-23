@@ -1,9 +1,9 @@
-import taskMdl from "../../models/task.js";
+import TaskMdl from "../../models/task.js";
 
 const createTask = async (userId, taskData) => {
   try {
     const tags = taskData.tags.split(",");
-    const task = new taskMdl({
+    const task = new TaskMdl({
       userId,
       title: taskData.title,
       description: taskData.description,
@@ -26,7 +26,7 @@ const createTask = async (userId, taskData) => {
 // Get all tasks for a user
 const getTasks = async (userId) => {
   try {
-    const task = await taskMdl.find({ userId });
+    const task = await TaskMdl.find({ userId });
     if (task.length === 0) {
       const error = new Error("TASK_NOT_FOUND");
       throw error;
@@ -40,7 +40,7 @@ const getTasks = async (userId) => {
 //Get task by id
 const getTaskById = async (taskId) => {
   try {
-    const task = await taskMdl.findById(taskId);
+    const task = await TaskMdl.findById(taskId);
     if (!task) {
       const error = new Error("TASK_NOT_FOUND");
       throw error;
@@ -55,7 +55,7 @@ const getTaskById = async (taskId) => {
 const updateTask = async (taskId, taskData) => {
   try {
     const tags = taskData.tags.split(",");
-    const task = await taskMdl.findByIdAndUpdate(
+    const task = await TaskMdl.findByIdAndUpdate(
       taskId,
       {
         title: taskData.title,
@@ -81,7 +81,7 @@ const updateTask = async (taskId, taskData) => {
 // Delete task
 const deleteTask = async (taskId) => {
   try {
-    const task = await taskMdl.findByIdAndDelete(taskId);
+    const task = await TaskMdl.findByIdAndDelete(taskId);
     if (!task) {
       throw new Error("TASK_NOT_FOUND");
     }
@@ -93,7 +93,7 @@ const deleteTask = async (taskId) => {
 };
 const updateTaskStatus = async (taskId, reqBody) => {
   try {
-    const task = await taskMdl.findByIdAndUpdate(taskId, reqBody, {
+    const task = await TaskMdl.findByIdAndUpdate(taskId, reqBody, {
       new: true,
     });
 
@@ -109,7 +109,7 @@ const updateTaskStatus = async (taskId, reqBody) => {
 
 const getTodayTask = async (userId) => {
   try {
-    const tasks = await taskMdl.find({ userId });
+    const tasks = await TaskMdl.find({ userId });
     const todayTasks = tasks.filter((task) => {
       return (
         task.dueDate.toLocaleDateString() == new Date().toLocaleDateString()
@@ -126,7 +126,7 @@ const getTodayTask = async (userId) => {
 };
 const getUpcomingTask = async (userId) => {
   try {
-    const tasks = await taskMdl.find({ userId });
+    const tasks = await TaskMdl.find({ userId });
     const upcomingTasks = tasks.filter((task) => {
       return (
         task.dueDate.toLocaleDateString() >= new Date().toLocaleDateString()
@@ -143,7 +143,7 @@ const getUpcomingTask = async (userId) => {
 };
 const getOverdueTask = async (userId) => {
   try {
-    const tasks = await taskMdl.find({ userId });
+    const tasks = await TaskMdl.find({ userId });
     const OverdueTask = tasks.filter((task) => {
       return (
         task.dueDate.toLocaleDateString() < new Date().toLocaleDateString()
