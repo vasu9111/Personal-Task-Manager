@@ -24,7 +24,7 @@ const createTask = Joi.object({
         "Status must be one of the following: pending, in_progress, completed, or archived.",
       "any.required": "Status is required.",
     }),
-  // category: Joi.string(),
+  category: Joi.string(),
   tags: Joi.string().max(50).messages({
     "string.max": "Each tag must be 50 characters.",
     "any.required": "Tags is required.",

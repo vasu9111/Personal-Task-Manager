@@ -1,4 +1,5 @@
 import CategoryMdl from "../../models/cetegory.js";
+import TaskMdl from "../../models/task.js";
 // cerate a categoey add
 const createCategory = async (userId, categoryData) => {
   try {
@@ -65,9 +66,23 @@ const deleteCategory = async (categoryId) => {
     throw error;
   }
 };
+const getCategoryTasks = async (req) => {
+  const categoryId = req.params.id;
+  try {
+    const tasks = await TaskMdl.find({ category: categoryId });
+    if (!tasks) {
+      throw new Error("CATEGORY_NOT_FOUND");
+    }
+    return tasks;
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   createCategory,
   getAllCategory,
   updateCategory,
   deleteCategory,
+  getCategoryTasks,
 };

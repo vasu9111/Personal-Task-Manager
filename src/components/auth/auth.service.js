@@ -91,30 +91,42 @@ const loginUser = async (reqBody) => {
     throw error;
   }
 };
-const resetPassword = async (reqBody) => {
-  const { email, password } = reqBody;
+// reset password
+const resetPassword = async (reqBody, userId) => {
+  const { currentPassword, newPassword, confirmPassword } = reqBody;
+
   try {
-    const userFound = await UserMdl.findOne({ email });
+    const userFound = await UserMdl.findById(userId);
     if (!userFound) {
       throw new Error("USER_NOT_FOUND");
     }
-
-    const isSamePassword = await bcrypt.compare(password, userFound.password);
-    if (isSamePassword) {
-      throw new Error("SAME_PASSWORD");
+    const isCurrentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      userFound.password
+    );
+    if (!isCurrentPasswordValid) {
+      throw new Error("INVALID_CURRENT_PASSWORD");
     }
-    const hashedPassword = await bcrypt.hash(password, 5);
+    if (currentPassword === newPassword) {
+      throw new Error("NEW_PASSWORD_SAME_AS_CURRENT");
+    }
+    if (newPassword !== confirmPassword) {
+      throw new Error("PASSWORDS_DO_NOT_MATCH");
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 5);
 
     await UserMdl.findByIdAndUpdate(userFound._id, {
       password: hashedPassword,
     });
 
-    return { message: "Password reseted successfully" };
+    return { message: "Password reset successfully" };
   } catch (err) {
     const error = new Error(err.message);
+    error.status = 400;
     throw error;
   }
 };
+// user profile
 const getUserProfile = async (userId) => {
   try {
     const userProfile = await UserMdl.findById(
@@ -131,7 +143,7 @@ const getUserProfile = async (userId) => {
     throw error;
   }
 };
-
+//user login
 const updateUserProfile = async (userId, updateData) => {
   try {
     const updatedProfile = await UserMdl.findByIdAndUpdate(userId, updateData, {

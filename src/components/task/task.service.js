@@ -38,13 +38,19 @@ const getTasks = async (userId) => {
   }
 };
 //Get task by id
-const getTaskById = async (taskId) => {
+const getTaskById = async (req) => {
   try {
+    const taskId = req.params.id;
     const task = await TaskMdl.findById(taskId);
     if (!task) {
       const error = new Error("TASK_NOT_FOUND");
       throw error;
     }
+    if (req.user._id !== task.userId.toString()) {
+      const error = new Error("not task id");
+      throw error;
+    }
+
     return task;
   } catch (err) {
     const error = new Error(err.message);
@@ -96,7 +102,6 @@ const updateTaskStatus = async (taskId, reqBody) => {
     const task = await TaskMdl.findByIdAndUpdate(taskId, reqBody, {
       new: true,
     });
-
     if (!task) {
       throw new Error("TASK_NOT_FOUND");
     }

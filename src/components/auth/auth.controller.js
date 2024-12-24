@@ -17,7 +17,7 @@ const loginUser = async (req, res, next) => {
 };
 const resetPassword = async (req, res, next) => {
   try {
-    const tokenData = await authService.resetPassword(req.body);
+    const tokenData = await authService.resetPassword(req.body, req.user._id);
     res.status(200).json(tokenData);
   } catch (error) {
     next(error);

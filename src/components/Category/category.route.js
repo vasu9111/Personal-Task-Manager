@@ -25,4 +25,9 @@ router.delete(
   middleware.authenticateToken,
   categoryController.deleteCategory
 );
+router.get(
+  "/:id/tasks",
+  middleware.authenticateToken,
+  categoryController.getCategoryTasks
+);
 export default router;

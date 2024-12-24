@@ -41,9 +41,20 @@ const deleteCategory = async (req, res, next) => {
     next(error);
   }
 };
+
+const getCategoryTasks = async (req, res, next) => {
+  try {
+    const tasks = await categoryService.getCategoryTasks(req);
+    res.status(200).json(tasks);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   createCategory,
   getAllCategory,
   updateCategory,
   deleteCategory,
+  getCategoryTasks,
 };
