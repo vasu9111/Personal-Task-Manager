@@ -13,7 +13,11 @@ router.post(
   middleware.validate(authValidation.loginUser),
   authController.loginUser
 );
-router.post("/reset-password", authController.resetPassword);
+router.post(
+  "/reset-password",
+  middleware.authenticateToken,
+  authController.resetPassword
+);
 router.get(
   "/profile",
   middleware.authenticateToken,

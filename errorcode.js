@@ -31,7 +31,7 @@ const errorCodes = {
     httpStatusCode: 404,
     body: {
       code: "user_not_found",
-      message: "Email ID is wrong please try again",
+      message: "user not found",
     },
   },
   SAME_PASSWORD: {
@@ -39,6 +39,28 @@ const errorCodes = {
     body: {
       code: "same_password",
       message: "New password cannot be the same as the current password",
+    },
+  },
+  INVALID_CURRENT_PASSWORD: {
+    httpStatusCode: 401,
+    body: {
+      code: "invalid_current_password",
+      message: "invalid current password please try again",
+    },
+  },
+  PASSWORDS_DO_NOT_MATCH: {
+    httpStatusCode: 401,
+    body: {
+      code: "password_do_not_match",
+      message:
+        "new password and confirm Password do not match please try again",
+    },
+  },
+  NEW_PASSWORD_SAME_AS_CURRENT: {
+    httpStatusCode: 401,
+    body: {
+      code: "new_password_same_as_current",
+      message: "new password same as current password",
     },
   },
   TODAY_TASK_NOT_FOUND: {

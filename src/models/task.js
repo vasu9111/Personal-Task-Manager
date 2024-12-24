@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema(
       enum: ["pending", "in_progress", "completed", "archived"],
       default: "pending",
     },
-    // category: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "category" },
     tags: { type: Array },
     attachments: [
       {
