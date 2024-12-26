@@ -69,9 +69,18 @@ const deleteCategory = async (categoryId) => {
 const getCategoryTasks = async (req) => {
   const categoryId = req.params.id;
   try {
-    const tasks = await TaskMdl.find({ category: categoryId });
-    if (!tasks) {
+    const allTasks = await TaskMdl.find({ category: categoryId }).populate({
+      path: "category",
+      select: "userId",
+    });
+    if (!allTasks) {
       throw new Error("CATEGORY_NOT_FOUND");
+    }
+    const tasks = allTasks.filter((task) => {
+      return task.category.userId.toString() === req.user._id;
+    });
+    if (tasks.length === 0) {
+      throw new Error("THIS_IS_NOT_A_CATEGORY");
     }
     return tasks;
   } catch (err) {

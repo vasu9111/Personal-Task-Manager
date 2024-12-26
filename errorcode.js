@@ -91,6 +91,20 @@ const errorCodes = {
       message: "category task not found ",
     },
   },
+  TODAY_SUMMARY_NOT_FOUND: {
+    httpStatusCode: 404,
+    body: {
+      code: "today_summary_not_found",
+      message: "today summary not found ",
+    },
+  },
+  THIS_IS_NOT_A_CATEGORY: {
+    httpStatusCode: 404,
+    body: {
+      code: "this_is_not_a_catagory",
+      message: "this is not a catagory ",
+    },
+  },
 };
 
 export default errorCodes;
