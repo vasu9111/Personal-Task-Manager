@@ -27,7 +27,23 @@ const loginUser = Joi.object({
     "any.required": "Password is required",
   }),
 });
+
+const resetPassword = Joi.object({
+  currentPassword: Joi.string().required().messages({
+    "string.empty": "currentPassword can't be empty",
+    "any.required": "currentPassword is required",
+  }),
+  newPassword: Joi.string().required().messages({
+    "string.empty": "newPassword can't be empty",
+    "any.required": "newPassword is required",
+  }),
+  confirmPassword: Joi.string().required().messages({
+    "string.empty": "confirmPassword can't be empty",
+    "any.reqired": "confirmPassword is required",
+  }),
+});
 export default {
   registerUser,
   loginUser,
+  resetPassword,
 };

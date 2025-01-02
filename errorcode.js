@@ -105,6 +105,12 @@ const errorCodes = {
       message: "this is not a catagory ",
     },
   },
+  NOT_TASK_ID: {
+    httpStatusCode: 404,
+    body: {
+      code: "NOT_A_TASK_ID",
+      message: "not a task id  ",
+    },
+  },
 };
-
 export default errorCodes;

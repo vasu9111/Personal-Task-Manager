@@ -13,6 +13,7 @@ const createTask = async (userId, taskData) => {
       category: taskData.category,
       tags: tags,
       attachments: taskData.attachments,
+      reminder: taskData.reminder,
     });
 
     await task.save();
@@ -47,10 +48,9 @@ const getTaskById = async (req) => {
       throw error;
     }
     if (req.user._id !== task.userId.toString()) {
-      const error = new Error("not task id");
+      const error = new Error("NOT_TASK_ID");
       throw error;
     }
-
     return task;
   } catch (err) {
     const error = new Error(err.message);
@@ -72,6 +72,7 @@ const updateTask = async (taskId, taskData) => {
         category: taskData.category,
         tags: tags,
         attachments: taskData.attachments,
+        reminder: taskData.reminder,
       },
       { new: true }
     );
@@ -91,7 +92,7 @@ const deleteTask = async (taskId) => {
     if (!task) {
       throw new Error("TASK_NOT_FOUND");
     }
-    return { message: "Task delele successfully" };
+    return { message: "Task delete successfully" };
   } catch (err) {
     const error = new Error(err.message);
     throw error;

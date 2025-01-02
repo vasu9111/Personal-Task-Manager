@@ -26,6 +26,10 @@ const taskSchema = new mongoose.Schema(
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     completedAt: { type: Date },
+    reminder: {
+      isSet: { type: Boolean, default: false },
+      remindAt: { type: Date },
+    },
   },
   { versionKey: false }
 );

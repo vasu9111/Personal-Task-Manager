@@ -15,7 +15,7 @@ router.post(
 );
 router.post(
   "/reset-password",
-  middleware.authenticateToken,
+  middleware.validate(authValidation.resetPassword),
   authController.resetPassword
 );
 router.get(
