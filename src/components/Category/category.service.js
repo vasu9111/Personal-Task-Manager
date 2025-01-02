@@ -60,7 +60,7 @@ const deleteCategory = async (categoryId) => {
     if (!category) {
       throw new Error("CATEGORY_NOT_FOUND");
     }
-    return { message: "category delele successfully" };
+    return { message: "category delete successfully" };
   } catch (err) {
     const error = new Error(err.message);
     throw error;

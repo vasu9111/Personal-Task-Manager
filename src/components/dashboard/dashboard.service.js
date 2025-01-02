@@ -17,6 +17,37 @@ const getDashboardSummary = async (userId) => {
     throw error;
   }
 };
+
+const getDashboardStats = async (userId) => {
+  try {
+    const stats = await TaskMdl.find({ userId });
+    const pendingCount = stats.filter(
+      (task) => task.status === "pending"
+    ).length;
+    const completedCount = stats.filter(
+      (task) => task.status === "completed"
+    ).length;
+    const in_progressCount = stats.filter(
+      (task) => task.status === "in_progress"
+    ).length;
+    const archivedCount = stats.filter(
+      (task) => task.status === "archived"
+    ).length;
+    const statusSummary = {
+      pending: pendingCount,
+      compile: completedCount,
+      in_progress: in_progressCount,
+      archived: archivedCount,
+    };
+    return {
+      stats: statusSummary,
+    };
+  } catch (err) {
+    const error = new Error(err.message);
+    throw error;
+  }
+};
 export default {
   getDashboardSummary,
+  getDashboardStats,
 };

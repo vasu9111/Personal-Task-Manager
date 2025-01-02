@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import router from "./indexRoute.js";
 import envData from "./src/config/index.js";
 import cookieParser from "cookie-parser";
-import session from "express-session";
+// import session from "express-session";
 import errorCodes from "./errorCode.js";
+import reminder from "./src/job/reminder.js";
+import { dailyDigestJob } from "./src/job/dailyDigest.js";
 
 const PORT = process.env.PORT;
 console.log("envData.port", envData.port);
@@ -21,15 +23,17 @@ mongoose
   .catch((err) => {
     console.log(err.message);
   });
-app.use(
-  session({
-    secret: "7TDvew2EzG",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
-  })
-);
+// app.use(
+//   session({
+//     secret: "7TDvew2EzG",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
+//   })
+// );
 app.use(cookieParser());
+reminder.start();
+dailyDigestJob.start();
 app.use("/api", router);
 app.use((err, req, res, next) => {
   const errorCode = errorCodes[err.message];

@@ -8,4 +8,9 @@ router.get(
   middleware.authenticateToken,
   dashboardController.getDashboardsummary
 );
+router.get(
+  "/stats",
+  middleware.authenticateToken,
+  dashboardController.getDashboardStats
+);
 export default router;

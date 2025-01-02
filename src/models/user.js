@@ -23,6 +23,15 @@ const userSchema = new mongoose.Schema(
       emailNotifications: { type: Boolean, default: true },
       theme: { type: String, default: "light" },
     },
+    confirmPassword: {
+      type: String,
+    },
+    newPAssword: {
+      type: String,
+    },
+    confirmPassword: {
+      type: String,
+    },
   },
   { versionKey: false }
 );

@@ -45,7 +45,12 @@ const createTask = Joi.object({
   createdAt: Joi.date().optional(),
   updatedAt: Joi.date().optional(),
   completedAt: Joi.date().iso().optional(),
+  reminder: Joi.object({
+    isSet: Joi.boolean().default(false),
+    remindAt: Joi.string(),
+  }),
 });
+
 export default {
   createTask,
 };
