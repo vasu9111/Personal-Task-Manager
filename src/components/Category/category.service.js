@@ -1,13 +1,15 @@
 import CategoryMdl from "../../models/cetegory.js";
 import TaskMdl from "../../models/task.js";
 // cerate a categoey add
-const createCategory = async (userId, categoryData) => {
+const createCategory = async (req) => {
+  const userId = req.user._id;
+  const { name, color, description } = req.body;
   try {
     const category = new CategoryMdl({
       userId,
-      name: categoryData.name,
-      color: categoryData.color,
-      description: categoryData.description,
+      name: name,
+      color: color,
+      description: description,
     });
 
     await category.save();
@@ -18,7 +20,8 @@ const createCategory = async (userId, categoryData) => {
   }
 };
 // get user all category
-const getAllCategory = async (userId) => {
+const getAllCategory = async (req) => {
+  const userId = req.user._id;
   try {
     const category = await CategoryMdl.find({ userId });
     if (category.length === 0) {
@@ -32,14 +35,16 @@ const getAllCategory = async (userId) => {
   }
 };
 // update category
-const updateCategory = async (categoryId, categoryData) => {
+const updateCategory = async (req) => {
+  const categoryId = req.params.id;
+  const { name, color, description } = req.body;
   try {
     const category = await CategoryMdl.findByIdAndUpdate(
       categoryId,
       {
-        name: categoryData.name,
-        color: categoryData.color,
-        description: categoryData.description,
+        name,
+        color,
+        description,
       },
       { new: true }
     );
@@ -54,7 +59,8 @@ const updateCategory = async (categoryId, categoryData) => {
 };
 
 // category delete
-const deleteCategory = async (categoryId) => {
+const deleteCategory = async (req) => {
+  const categoryId = req.params.id;
   try {
     const category = await CategoryMdl.findByIdAndDelete(categoryId);
     if (!category) {
