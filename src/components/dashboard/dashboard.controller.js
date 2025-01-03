@@ -1,7 +1,7 @@
 import dashboardService from "./dashboard.service.js";
 const getDashboardsummary = async (req, res, next) => {
   try {
-    const summary = await dashboardService.getDashboardSummary(req.user._id);
+    const summary = await dashboardService.getDashboardSummary(req);
     res.status(200).json(summary);
   } catch (error) {
     next(error);
@@ -10,7 +10,7 @@ const getDashboardsummary = async (req, res, next) => {
 
 const getDashboardStats = async (req, res, next) => {
   try {
-    const stats = await dashboardService.getDashboardStats(req.user._id);
+    const stats = await dashboardService.getDashboardStats(req);
     res.status(200).json(stats);
   } catch (error) {
     next(error);

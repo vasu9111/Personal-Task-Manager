@@ -92,8 +92,9 @@ const loginUser = async (reqBody) => {
   }
 };
 // reset password
-const resetPassword = async (reqBody, userId) => {
-  const { currentPassword, newPassword, confirmPassword } = reqBody;
+const resetPassword = async (req) => {
+  const userId = req.user._id;
+  const { currentPassword, newPassword, confirmPassword } = req.body;
 
   try {
     const userFound = await UserMdl.findById(userId);
@@ -127,7 +128,8 @@ const resetPassword = async (reqBody, userId) => {
   }
 };
 // user profile
-const getUserProfile = async (userId) => {
+const getUserProfile = async (req) => {
+  const userId = req.user._id;
   try {
     const userProfile = await UserMdl.findById(
       userId,
@@ -143,19 +145,21 @@ const getUserProfile = async (userId) => {
     throw error;
   }
 };
-//user login
-const updateUserProfile = async (userId, updateData) => {
+//user updateprofile
+const updateUserProfile = async (req) => {
+  const userId = req.user._id;
+  const { name, email, preferences } = req.body;
   try {
-    const updatedProfile = await UserMdl.findByIdAndUpdate(userId, updateData, {
-      new: true,
-      runValidators: true,
-      fields: "name email preferences",
-    });
+    const updatedProfile = await UserMdl.findByIdAndUpdate(
+      userId,
+      { name, email, preferences },
+      { new: true }
+    );
 
     if (!updatedProfile) {
       throw new Error("USER_NOT_FOUND");
     }
-    return updatedProfile;
+    return { message: "Profile Update successfully", updatedProfile };
   } catch (err) {
     const error = new Error(err.message);
     throw error;

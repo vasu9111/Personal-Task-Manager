@@ -17,7 +17,7 @@ const loginUser = async (req, res, next) => {
 };
 const resetPassword = async (req, res, next) => {
   try {
-    const tokenData = await authService.resetPassword(req.body, req.user._id);
+    const tokenData = await authService.resetPassword(req);
     res.status(200).json(tokenData);
   } catch (error) {
     next(error);
@@ -25,7 +25,7 @@ const resetPassword = async (req, res, next) => {
 };
 const getUserProfile = async (req, res, next) => {
   try {
-    const userProfile = await authService.getUserProfile(req.user._id);
+    const userProfile = await authService.getUserProfile(req);
     res.status(200).json(userProfile);
   } catch (error) {
     next(error);
@@ -33,10 +33,7 @@ const getUserProfile = async (req, res, next) => {
 };
 const updateUserProfile = async (req, res, next) => {
   try {
-    const updatedProfile = await authService.updateUserProfile(
-      req.user._id,
-      req.body
-    );
+    const updatedProfile = await authService.updateUserProfile(req);
     res.status(200).json(updatedProfile);
   } catch (error) {
     next(error);

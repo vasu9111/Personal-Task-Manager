@@ -2,7 +2,7 @@ import taskService from "./task.service.js";
 // Create a new task
 const createTask = async (req, res, next) => {
   try {
-    const task = await taskService.createTask(req.user._id, req.body);
+    const task = await taskService.createTask(req);
     res.status(201).json(task);
   } catch (error) {
     next(error);
@@ -11,7 +11,7 @@ const createTask = async (req, res, next) => {
 // Get all tasks for a user
 const getAllTasks = async (req, res, next) => {
   try {
-    const tasks = await taskService.getTasks(req.user._id);
+    const tasks = await taskService.getTasks(req);
     res.status(200).json(tasks);
   } catch (error) {
     next(error);
@@ -29,7 +29,7 @@ const getTaskById = async (req, res, next) => {
 // update a task
 const updateTask = async (req, res, next) => {
   try {
-    const task = await taskService.updateTask(req.params.id, req.body);
+    const task = await taskService.updateTask(req);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -38,7 +38,7 @@ const updateTask = async (req, res, next) => {
 // Delete task
 const deleteTask = async (req, res, next) => {
   try {
-    const task = await taskService.deleteTask(req.params.id);
+    const task = await taskService.deleteTask(req);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -47,7 +47,7 @@ const deleteTask = async (req, res, next) => {
 // update task by Status
 const updateTaskStatus = async (req, res, next) => {
   try {
-    const task = await taskService.updateTaskStatus(req.params.id, req.body);
+    const task = await taskService.updateTaskStatus(req);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -55,7 +55,7 @@ const updateTaskStatus = async (req, res, next) => {
 };
 const getTodayTask = async (req, res, next) => {
   try {
-    const task = await taskService.getTodayTask(req.user._id);
+    const task = await taskService.getTodayTask(req);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -64,7 +64,7 @@ const getTodayTask = async (req, res, next) => {
 
 const getUpcomingTask = async (req, res, next) => {
   try {
-    const task = await taskService.getUpcomingTask(req.user._id);
+    const task = await taskService.getUpcomingTask(req);
     res.status(200).json(task);
   } catch (error) {
     next(error);
@@ -72,7 +72,7 @@ const getUpcomingTask = async (req, res, next) => {
 };
 const getOverdueTask = async (req, res, next) => {
   try {
-    const task = await taskService.getOverdueTask(req.user._id);
+    const task = await taskService.getOverdueTask(req);
     res.status(200).json(task);
   } catch (error) {
     next(error);

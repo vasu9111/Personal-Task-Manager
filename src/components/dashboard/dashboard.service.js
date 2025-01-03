@@ -1,6 +1,7 @@
 import TaskMdl from "../../models/task.js";
 
-const getDashboardSummary = async (userId) => {
+const getDashboardSummary = async (req) => {
+  const userId = req.user._id;
   try {
     const summary = await TaskMdl.find({ userId });
     const todaySummary = summary.filter((summary) => {
@@ -18,7 +19,8 @@ const getDashboardSummary = async (userId) => {
   }
 };
 
-const getDashboardStats = async (userId) => {
+const getDashboardStats = async (req) => {
+  const userId = req.user._id;
   try {
     const stats = await TaskMdl.find({ userId });
     const pendingCount = stats.filter(

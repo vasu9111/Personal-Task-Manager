@@ -1,19 +1,30 @@
 import TaskMdl from "../../models/task.js";
 
-const createTask = async (userId, taskData) => {
+const createTask = async (req) => {
+  const userId = req.user._id;
+  const {
+    title,
+    description,
+    dueDate,
+    priority,
+    status,
+    category,
+    tags,
+    attachments,
+    reminder,
+  } = req.body;
   try {
-    const tags = taskData.tags.split(",");
     const task = new TaskMdl({
       userId,
-      title: taskData.title,
-      description: taskData.description,
-      dueDate: taskData.dueDate,
-      priority: taskData.priority,
-      status: taskData.status,
-      category: taskData.category,
+      title: title,
+      description: description,
+      dueDate: dueDate,
+      priority: priority,
+      status: status,
+      category: category,
       tags: tags,
-      attachments: taskData.attachments,
-      reminder: taskData.reminder,
+      attachments: attachments,
+      reminder: reminder,
     });
 
     await task.save();
@@ -25,8 +36,9 @@ const createTask = async (userId, taskData) => {
 };
 
 // Get all tasks for a user
-const getTasks = async (userId) => {
+const getTasks = async (req) => {
   try {
+    const userId = req.params.id;
     const task = await TaskMdl.find({ userId });
     if (task.length === 0) {
       const error = new Error("TASK_NOT_FOUND");
@@ -58,21 +70,33 @@ const getTaskById = async (req) => {
   }
 };
 // Update a task
-const updateTask = async (taskId, taskData) => {
+const updateTask = async (req) => {
   try {
-    const tags = taskData.tags.split(",");
+    const taskId = req.params.id;
+    const {
+      title,
+      description,
+      dueDate,
+      priority,
+      status,
+      category,
+      tags,
+      attachments,
+      reminder,
+    } = req.body;
+
     const task = await TaskMdl.findByIdAndUpdate(
       taskId,
       {
-        title: taskData.title,
-        description: taskData.description,
-        dueDate: taskData.dueDate,
-        priority: taskData.priority,
-        status: taskData.status,
-        category: taskData.category,
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        priority: priority,
+        status: status,
+        category: category,
         tags: tags,
-        attachments: taskData.attachments,
-        reminder: taskData.reminder,
+        attachments: attachments,
+        reminder: reminder,
       },
       { new: true }
     );
@@ -86,7 +110,9 @@ const updateTask = async (taskId, taskData) => {
   }
 };
 // Delete task
-const deleteTask = async (taskId) => {
+const deleteTask = async (req) => {
+  const taskId = req.params.id;
+
   try {
     const task = await TaskMdl.findByIdAndDelete(taskId);
     if (!task) {
@@ -98,10 +124,13 @@ const deleteTask = async (taskId) => {
     throw error;
   }
 };
-const updateTaskStatus = async (taskId, reqBody) => {
+const updateTaskStatus = async (req) => {
+  const taskId = req.params.id;
+  const { status } = req.body;
   try {
-    const task = await TaskMdl.findByIdAndUpdate(taskId, reqBody, {
+    const task = await TaskMdl.findByIdAndUpdate(taskId, {
       new: true,
+      status: status,
     });
     if (!task) {
       throw new Error("TASK_NOT_FOUND");
@@ -113,7 +142,8 @@ const updateTaskStatus = async (taskId, reqBody) => {
   }
 };
 
-const getTodayTask = async (userId) => {
+const getTodayTask = async (req) => {
+  const userId = req.user._id;
   try {
     const tasks = await TaskMdl.find({ userId });
     const todayTasks = tasks.filter((task) => {
@@ -130,7 +160,8 @@ const getTodayTask = async (userId) => {
     throw error;
   }
 };
-const getUpcomingTask = async (userId) => {
+const getUpcomingTask = async (req) => {
+  const userId = req.user._id;
   try {
     const tasks = await TaskMdl.find({ userId });
     const upcomingTasks = tasks.filter((task) => {
@@ -147,7 +178,8 @@ const getUpcomingTask = async (userId) => {
     throw error;
   }
 };
-const getOverdueTask = async (userId) => {
+const getOverdueTask = async (req) => {
+  const userId = req.user._id;
   try {
     const tasks = await TaskMdl.find({ userId });
     const OverdueTask = tasks.filter((task) => {

@@ -2,10 +2,7 @@ import categoryService from "./category.service.js";
 // Create a new category
 const createCategory = async (req, res, next) => {
   try {
-    const category = await categoryService.createCategory(
-      req.user._id,
-      req.body
-    );
+    const category = await categoryService.createCategory(req);
     res.status(201).json(category);
   } catch (error) {
     next(error);
@@ -14,7 +11,7 @@ const createCategory = async (req, res, next) => {
 // get all user category
 const getAllCategory = async (req, res, next) => {
   try {
-    const category = await categoryService.getAllCategory(req.user._id);
+    const category = await categoryService.getAllCategory(req);
     res.status(200).json(category);
   } catch (error) {
     next(error);
@@ -23,10 +20,7 @@ const getAllCategory = async (req, res, next) => {
 // update category
 const updateCategory = async (req, res, next) => {
   try {
-    const category = await categoryService.updateCategory(
-      req.params.id,
-      req.body
-    );
+    const category = await categoryService.updateCategory(req);
     res.status(200).json(category);
   } catch (error) {
     next(error);
@@ -35,7 +29,7 @@ const updateCategory = async (req, res, next) => {
 //delete category
 const deleteCategory = async (req, res, next) => {
   try {
-    const category = await categoryService.deleteCategory(req.params.id);
+    const category = await categoryService.deleteCategory(req);
     res.status(200).json(category);
   } catch (error) {
     next(error);
